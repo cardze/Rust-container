@@ -12,17 +12,18 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     git
 
+    
+# Add Rust binaries to PATH for all users
+#ENV PATH="/root/.cargo/bin:${PATH}"
+
+# Switch back to Jenkins agent user
+USER jenkins
+
 # Install rustup and Rust (latest stable)
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
     && . $HOME/.cargo/env \
     && rustc --version \
     && cargo --version
-
-# Add Rust binaries to PATH for all users
-ENV PATH="/root/.cargo/bin:${PATH}"
-
-# Switch back to Jenkins agent user
-USER jenkins
 
 # Default command (from Jenkins inbound agent)
 ENTRYPOINT ["jenkins-agent"]
