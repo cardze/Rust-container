@@ -7,8 +7,10 @@ pipeline {
   stages {
     stage('test') {
       steps {
-        sh '. $HOME/.cargo/env && cargo --version'
-        sh 'cargo test'
+        sh '''
+        . $HOME/.cargo/env 
+        cargo test
+        '''
       }
     }
 
