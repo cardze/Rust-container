@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('clone') {
       steps {
-        sh 'git clone 
+        sh 'git clone https://github.com/cardze/Rust-container.git
         }
 }
     stage('test') {
