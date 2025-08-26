@@ -1,0 +1,15 @@
+pipeline {
+  agent rust-agent
+  stages {
+    stage('clone') {
+      steps {
+        sh 'git clone 
+        }
+}
+    stage('test') {
+      steps {
+        sh 'python3 -m pytest --maxfail=1 --disable-warnings -q'
+      }
+    }
+  }
+}
