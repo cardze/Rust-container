@@ -1,14 +1,25 @@
 pipeline {
-  agent rust-agent
+  agent {
+    node {
+      label 'rust-agent'
+    }
+  }
   stages {
-    stage('clone') {
-      steps {
-        sh 'git clone https://github.com/cardze/Rust-container.git
-        }
-}
     stage('test') {
       steps {
-        sh 'python3 -m pytest --maxfail=1 --disable-warnings -q'
+        sh 'cargo test'
+      }
+    }
+
+    stage('build') {
+      steps {
+        sh 'cargo build --release'
+      }
+    }
+
+    stage('run') {
+      steps {
+        sh 'cargo run'
       }
     }
   }
