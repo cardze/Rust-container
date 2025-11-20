@@ -34,7 +34,7 @@ jobs:
     - name: Download build artifact
       uses: actions/download-artifact@v4
       with:
-        name: myapp
+        name: my-rust-binary
         path: ./bin
 
     - name: Make executable
