@@ -1,3 +1,5 @@
+use std::env;
+
 pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
@@ -27,6 +29,15 @@ mod tests {
     }
 }
 
+// Get '--version' from parameters and Show version info to Console
+fn show_version() {
+    let args: Vec<String> = env::args().collect();
+    if args.len() > 1 && args[1] == "--version" {
+        println!("Rust-container version 1.0.0");
+        std::process::exit(0);
+    }
+}
+
 fn main() {
-    println!("Hello, world!");
+    show_version();
 }

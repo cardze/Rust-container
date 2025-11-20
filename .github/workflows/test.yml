@@ -1,22 +1,44 @@
-name: CI Example
+name: Rust Artifact Example
 
-# When to run
 on:
   push:
-    branches: [ dev ]
-  pull_request:
-    branches: [ dev ]
+    branches: [ "dev" ]
 
-# Define what to do
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions-rust-lang/setup-rust-toolchain@v1 # Use the latest version
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Build release binary
+      run: cargo build --release
+
+    - name: Upload binary as artifact
+      uses: actions/upload-artifact@v4
       with:
-        toolchain: stable # Or specify a version like 1.70.0
-        # components: rustfmt, clippy # Optional: Install additional components
-        # targets: x86_64-pc-windows-gnu # Optional: Install targets for cross-compilation
-    - name: Run tests
-      run: cargo test
+        name: my-rust-binary
+        path: target/release/myapp
+        retention-days: 7
+        if-no-files-found: error
+
+  test-artifact:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download build artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: myapp
+        path: ./bin
+
+    - name: Make executable
+      run: chmod +x ./bin/myapp
+
+    - name: Run artifact
+      run: ./bin/myapp --version
